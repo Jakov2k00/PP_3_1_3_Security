@@ -35,11 +35,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> getUsersByCount(int count) {
-        return entityManager.createQuery("FROM User ORDER BY id ASC", User.class).setMaxResults(count).getResultList();
-    }
-
-    @Override
     public User getUserById(Long id) {
         User user = entityManager.find(User.class, id);
         return user;

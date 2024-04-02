@@ -14,22 +14,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UserController {
 
-    @Autowired
     private UserService userService;
 
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping(value = "/users")
-    public String getUsersEndpoint(@RequestParam(name = "count", required = false, defaultValue = "5")Integer count, Model model) {
-        if (count == null || count >= 5) {
-            model.addAttribute("users", userService.getAllUsers());
-        } else {
-            model.addAttribute("users", userService.getUsersByCount(count));
-        }
+    public String getUsersEndpoint(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
 
     @PostMapping(value = "/add")
-    public String addUserEndpoint(@RequestParam String name, @RequestParam String surname, @RequestParam Byte age, @RequestParam String email) {
-        userService.addUser(new User(name, surname, age, email));
+    public String addUserEndpoint(@ModelAttribute User user) {
+        userService.addUser(user);
         return "redirect:/users";
     }
 
