@@ -13,6 +13,7 @@
         <th>Surname</th>
         <th>Age</th>
         <th>Email</th>
+        <th>Password</th>
         <th>Action</th>
     </tr>
     <tr th:each="user : ${users}">
@@ -21,19 +22,21 @@
         <td th:text="${user.surname}"></td>
         <td th:text="${user.age}"></td>
         <td th:text="${user.email}"></td>
+        <td th:text="${user.password}"></td>
         <td>
-            <a th:href="@{'/edit?id=' + ${user.id}}">Edit</a> |
-            <a th:href="@{'/delete?id=' + ${user.id}}">Delete</a>
+            <a th:href="@{'/users/edit/' + ${user.id}}">Edit</a> |
+            <a th:href="@{'/users/delete/' + ${user.id}}">Delete</a>
         </td>
     </tr>
 </table>
 
 <h2>Add User</h2>
-<form th:action="@{/add}" method="post">
+<form th:action="@{/users/add}" th:method="post">
     Name: <input type="text" name="name" />
     Surname: <input type="text" name="surname" />
-    Email: <input type="text" name="email" />
     Age: <input type="number" name="age" />
+    Email: <input type="text" name="email" />
+    Password: <input type="text" name="password" />
     <button type="submit">Add User</button>
 </form>
 </body>
