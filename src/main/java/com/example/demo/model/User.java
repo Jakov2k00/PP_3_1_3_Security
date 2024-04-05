@@ -17,12 +17,12 @@ public class User implements Serializable {
     @Column(name = "name", nullable = false)
     @NotEmpty(message = "Field 'name' cannot be empty!")
     @Size(min = 2, max = 24, message = "Field 'name' cannot be shorter than 2 and longer than 24 characters!")
-    private String name;
+    private String firstName;
 
     @Column(name = "surname", nullable = false)
     @NotEmpty(message = "Field 'surname' cannot be empty!")
     @Size(min = 2, max = 24, message = "Field 'surname' cannot be shorter than 2 and longer than 24 characters!")
-    private String surname;
+    private String lastName;
 
     @Column(name = "age", nullable = false)
     @Min(value = 0, message = "Field 'age' cannot be lower than 0!")
@@ -42,9 +42,9 @@ public class User implements Serializable {
 
     }
 
-    public User(String name, String surname, Byte age, String email, String password) {
-        this.name = name;
-        this.surname = surname;
+    public User(String firstName, String lastName, Byte age, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.age = age;
         this.email = email;
         this.password = password;
@@ -58,23 +58,23 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String name) {
+        this.firstName = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String surname) {
+        this.lastName = surname;
     }
 
-    public byte getAge() {
+    public Byte getAge() {
         return age;
     }
 
@@ -109,8 +109,8 @@ public class User implements Serializable {
         User user = (User) o;
         return age.equals(user.age)
                 && id.equals(user.id)
-                && name.equals(user.name)
-                && surname.equals(user.surname)
+                && firstName.equals(user.firstName)
+                && lastName.equals(user.lastName)
                 && email.equals(user.email)
                 && password.equals(user.password);
     }
@@ -119,8 +119,8 @@ public class User implements Serializable {
     public int hashCode() {
         int result = 17;
         result = 31 * result + id.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + surname.hashCode();
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
         result = 31 * result + age.hashCode();
         result = 31 * result + email.hashCode();
         result = 31 * result + password.hashCode();
@@ -131,8 +131,8 @@ public class User implements Serializable {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
+                ", name='" + firstName + '\'' +
+                ", surname='" + lastName + '\'' +
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +

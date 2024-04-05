@@ -4,32 +4,30 @@
     <title>User Edit Form</title>
 </head>
 <body>
-<h1>Edit User</h1>
+<h1>New User Form</h1>
 
-<form th:method="PATCH" th:action="@{/users/edit/{id}(id=${user.getId()})}" th:object="${user}">
+<form th:method="POST" th:action="@{/users/add}" th:object="${user}">
     <label for="firstName">Name:</label>
-    <input type="text" th:field="*{firstName}" />
+    <input type="text" th:field="*{firstName}" placeholder="First Name" />
     <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">FirstName Error</div>
 
     <label for="lastName">Surname:</label>
-    <input type="text" th:field="*{lastName}" />
+    <input type="text" th:field="*{lastName}" placeholder="Last Name" />
     <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">LastName Error</div>
 
     <label for="age">Age:</label>
-    <input type="number" th:field="*{age}" />
+    <input type="number" th:field="*{age}" placeholder="Age" />
     <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
 
     <label for="email">Email:</label>
-    <input type="text" th:field="*{email}" />
+    <input type="text" th:field="*{email}" placeholder="Email" />
     <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
 
     <label for="password">Password:</label>
-    <input type="text" th:field="*{password}" />
+    <input type="text" th:field="*{password}" placeholder="Password" />
     <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
 
-    <button type="submit">Update User</button>
+    <button type="submit">Add User</button>
 </form>
 </body>
 </html>
-
-

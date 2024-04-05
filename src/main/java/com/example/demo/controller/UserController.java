@@ -3,14 +3,12 @@ package com.example.demo.controller;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/users")
@@ -29,10 +27,16 @@ public class UserController {
         return "users";
     }
 
+    @GetMapping(value = "/add")
+    public String addUserGetEndpoint(Model model) {
+        model.addAttribute("user", new User());
+        return "add-user";
+    }
+
     @PostMapping(value = "/add")
-    public String addUserEndpoint(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+    public String addUserPostEndpoint(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "users";
+            return "add-user";
         }
         userService.addUser(user);
         return "redirect:/users";
