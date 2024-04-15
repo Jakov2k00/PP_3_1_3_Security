@@ -40,6 +40,5 @@ public class RoleValidator implements Validator {
                 return;
             }
         }
-
     }
 }

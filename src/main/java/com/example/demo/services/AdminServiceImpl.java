@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl implements AdminService {
 
     private UserRepository userRepository;
+
     private RoleRepository roleRepository;
 
     @Autowired

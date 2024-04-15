@@ -15,7 +15,9 @@ import java.util.Set;
 public class RegistrationServiceImpl implements RegistrationService {
 
     private final UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;
+
     private final RoleService roleService;
 
     @Autowired

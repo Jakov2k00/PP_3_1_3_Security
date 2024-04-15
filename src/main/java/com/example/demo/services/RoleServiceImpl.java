@@ -11,6 +11,7 @@ import java.util.Set;
 
 @Service
 public class RoleServiceImpl implements RoleService {
+
     private final RoleRepository roleRepository;
 
     @Autowired
@@ -26,12 +27,6 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role findRoleByRoleId(Long id) {
         return roleRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public Role findRoleByStringId(String sid) {
-        Long id = Long.parseLong(sid);
-        return roleRepository.findRoleByRoleId(id).orElse(null);
     }
 
     @Override

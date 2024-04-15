@@ -15,8 +15,11 @@ import javax.annotation.PostConstruct;
 public class MyDataInitializer {
 
     private final AdminService adminService;
+
     private final RoleService roleService;
+
     private final PasswordEncoder passwordEncoder;
+
     private final RegistrationService registrationService;
 
     @Autowired
