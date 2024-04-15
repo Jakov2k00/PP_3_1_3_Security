@@ -1,9 +1,12 @@
-package com.example.demo.model;
+package com.example.demo.models;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "users", schema = "testdb")
@@ -19,7 +22,7 @@ public class User implements Serializable {
     @Size(min = 2, max = 24, message = "Field 'name' cannot be shorter than 2 and longer than 24 characters!")
     private String firstName;
 
-    @Column(name = "surname", nullable = false)
+    @Column(name = "lastname", nullable = false)
     @NotEmpty(message = "Field 'surname' cannot be empty!")
     @Size(min = 2, max = 24, message = "Field 'surname' cannot be shorter than 2 and longer than 24 characters!")
     private String lastName;
@@ -37,6 +40,15 @@ public class User implements Serializable {
     @NotEmpty(message = "Field 'password' is incorrect!")
     @Size(min = 4, max = 24, message = "Field 'password' cannot be shorter than 4 and longer than 24 characters!")
     private String password;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @Fetch(FetchMode.JOIN)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
 
     public User() {
 
@@ -96,6 +108,14 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
