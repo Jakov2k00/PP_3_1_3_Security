@@ -44,7 +44,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public User getUserByFirstName(String firstName) {
-        Optional<User> userOpt = userRepository.findUserByFirstName(firstName);
+        Optional<User> userOpt = userRepository.findByFirstName(firstName);
 
         if (userOpt.isEmpty()) {
             throw new UsernameNotFoundException("User not found!");
