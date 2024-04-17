@@ -17,7 +17,7 @@ public class User implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     @NotEmpty(message = "Field 'name' cannot be empty!")
     @Size(min = 2, max = 24, message = "Field 'name' cannot be shorter than 2 and longer than 24 characters!")
     private String firstName;

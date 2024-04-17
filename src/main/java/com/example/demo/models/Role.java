@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "roles", schema = "testdb")
@@ -15,11 +16,11 @@ public class Role implements GrantedAuthority {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "role_name")
+    @Column(name = "role_name", unique = true)
     private String roleName;
 
     @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
+    private Set<User> users;
 
     @Override
     public String getAuthority() {
@@ -34,7 +35,7 @@ public class Role implements GrantedAuthority {
         this.roleName = roleName;
     }
 
-    public Role(Long id, String roleName, Collection<User> users) {
+    public Role(Long id, String roleName, Set<User> users) {
         this.id = id;
         this.roleName = roleName;
         this.users = users;
@@ -60,7 +61,7 @@ public class Role implements GrantedAuthority {
         return users;
     }
 
-    public void setUsers(Collection<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
