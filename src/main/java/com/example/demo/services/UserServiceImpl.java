@@ -4,6 +4,7 @@ import com.example.demo.models.Role;
 import com.example.demo.models.User;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.until.RoleCryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -74,13 +75,31 @@ public class UserServiceImpl implements UserService {
     public void editUser(User user, List<String> roles) {
         User undoEdit = userRepository.getById(user.getId());
         user.setPassword(undoEdit.getPassword());
-        Set<Role> roleSet = roles.stream()
+
+        Set<Role> currentRoles = user.getRoles();
+
+        Set<Long> newRoleIds = roles.stream()
                 .map(Long::valueOf)
+                .collect(Collectors.toSet());
+
+        Set<Long> newRolesToAdd = newRoleIds.stream()
+                .filter(roleId -> currentRoles.stream().noneMatch(role -> role.getId().equals(roleId)))
+                .collect(Collectors.toSet());
+
+        Set<Role> newRoles = newRolesToAdd.stream()
                 .map(roleRepository::findById)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
+                .map(role -> {
+                    String encryptedRoleName = RoleCryptor.encryptRole(role.getRoleName());
+                    Role encryptedRole = new Role();
+                    encryptedRole.setRoleName(encryptedRoleName);
+                    return encryptedRole;
+                })
                 .collect(Collectors.toSet());
-        user.setRoles(roleSet);
+
+        currentRoles.addAll(newRoles);
+
         userRepository.save(user);
     }
 
@@ -93,9 +112,9 @@ public class UserServiceImpl implements UserService {
     private void setUserRoles(User user, String[] rolesNames) {
         Set<Role> rolesSet = new HashSet<>();
         for (String roleName : rolesNames) {
-            Role role = roleService.findRoleByRoleName(roleName);
+            Role role = roleService.findRoleByRoleName(RoleCryptor.encryptRole(roleName));
             if (role == null) {
-                role = new Role(roleName);
+                role = new Role(RoleCryptor.encryptRole(roleName));
                 roleService.saveRole(role);
             }
             rolesSet.add(role);
@@ -105,8 +124,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerAdmin(User user) {
-        final String ROLE = "ROLE_ADMIN";
-        String[] roles = new String[]{ROLE};
+        String[] roles = new String[]{RoleCryptor.getAdminRoleName()};
         setUserRoles(user, roles);
 
         userRepository.save(user);
@@ -114,9 +132,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerUser(User user) {
-        final String ROLE = "ROLE_USER";
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        String[] roles = new String[]{ROLE};
+        String[] roles = new String[]{RoleCryptor.getUserRoleName()};
         setUserRoles(user, roles);
 
         userRepository.save(user);
